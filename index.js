@@ -32,10 +32,18 @@ async function run() {
         res.send(result)
     })
 
+
+
     app.post("/MyFavorites",async(req,res)=>{
       const data= req.body
-      const result =await MyFavorites.insertOne()
+      const result =await MyFavorites.insertOne(data)
       res.send(result)
+    })
+
+    app.get("/MyFavorites",async(req,res)=>{
+      const cursor = MyFavorites.find()
+       const  result = await cursor.toArray()
+       res.send(result)
     })
 
     // all get
@@ -64,7 +72,12 @@ async function run() {
       res.send(result)
     })
 
- 
+    //   app.get("/search", async(req, res) => {
+    //   const search_text = req.query.search
+    //   const result = await products.find({name: {$regex: search_text, $options: "i"}}).toArray()
+    //   res.send(result)
+    // })
+
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
