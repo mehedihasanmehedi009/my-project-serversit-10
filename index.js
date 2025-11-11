@@ -2,7 +2,8 @@ const express = require('express')
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require("cors")
 const app = express()
-const port = process.env.PROt || 3000
+const port = process.env.PROT
+ || 3000
 // 1Gi8RaLUWtnwHlxl
 app.use(cors())
 app.use(express.json())
@@ -71,12 +72,33 @@ async function run() {
       const result = await products.find({created_by:email}).toArray()
       res.send(result)
     })
+     
 
-    //   app.get("/search", async(req, res) => {
-    //   const search_text = req.query.search
-    //   const result = await products.find({name: {$regex: search_text, $options: "i"}}).toArray()
-    //   res.send(result)
-    // })
+    app.delete("/MyFavorites/:id",async(req,res)=>{
+    const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await MyFavorites.deleteOne(query);
+      res.send(result)
+    })
+ 
+  app.delete("/mygallry/:id", async (req, res) => {
+  const id = req.params.id;
+  const query = { _id: new ObjectId(id) };
+  const result = await products.deleteOne(query);
+  res.send(result);
+});
+
+// app.put("/mygallry/:id", async (req, res) => {
+//   const id = req.params.id;
+//   const updatedData = req.body;
+//   const query = { _id: new ObjectId(id) };
+//   const update = {
+//     $set: updatedData
+//   };
+//   const result = await products.updateOne(query, update);
+//   res.send(result);
+// });
+
 
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
