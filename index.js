@@ -23,11 +23,19 @@ async function run() {
     await client.connect();
     const main = client.db("maindb")
     const products = main.collection("product")
+    const MyFavorites = main.collection("MyFavorites")
+
     
     app.post("/product",async(req,res)=>{
         const newproduct = req.body
         const result=await products.insertOne(newproduct)
         res.send(result)
+    })
+
+    app.post("/MyFavorites",async(req,res)=>{
+      const data= req.body
+      const result =await MyFavorites.insertOne()
+      res.send(result)
     })
 
     // all get
@@ -49,6 +57,12 @@ async function run() {
     });
 
 
+
+    app.get("/mygallry",async(req,res)=>{
+      const email = req.query.email 
+      const result = await products.find({created_by:email}).toArray()
+      res.send(result)
+    })
 
  
     await client.db("admin").command({ ping: 1 });
