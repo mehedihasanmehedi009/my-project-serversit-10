@@ -79,7 +79,8 @@ async function run() {
       const query = { _id: new ObjectId(id) };
       const result = await MyFavorites.deleteOne(query);
       res.send(result)
-    })
+    }) 
+    
  
   app.delete("/mygallry/:id", async (req, res) => {
   const id = req.params.id;
